@@ -153,7 +153,7 @@ class Arena:
     
         # Reset the state of the players if needed
         [p.reset() for p in self.players]
-        print(self.players)
+        #print(self.players)
         self.game_state = self.game_cls()
         player_to_index = _player_to_index or list(range(self.game_state.num_players()))
 
@@ -162,7 +162,7 @@ class Arena:
 
         while not self.stop_event.is_set():
             while self.pause_event.is_set():
-                time.sleep(.5)
+                time.sleep(.1)
 
             action = self.players[player_to_index[self.game_state.player]](self.game_state)
             if self.stop_event.is_set(): #or not isinstance(action, int):
@@ -175,16 +175,20 @@ class Arena:
                 print(f'______________________________________________________________________________________________')
                 print(f'Turn {self.game_state.turns}, Move {self.game_state._moves+1}, Player {self.game_state.player}')
 
-            [p.update(self.game_state, action) for p in self.players]
+            for p in self.players:
+                #print("Updating player", p)
+                p.update(self.game_state, action)
+
             self.game_state.play_action(action)
 
             if verbose:
                 self.display(self.game_state, action)
 
             winstate = self.game_state.win_state()
-            print("Winstate: ", winstate)
+            #print("Winstate: ", winstate)
 
             if winstate.any():
+                print(f'Game over: Turn {self.game_state.turns}, Result {winstate}')
                 if verbose:
                     print(f'Game over: Turn {self.game_state.turns}, Result {winstate}')
                     #self.display(self.game_state)

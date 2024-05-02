@@ -50,9 +50,16 @@ if __name__ == '__main__':
     # calculateSingleMove()
 
     # # nnet players
-    #nn1 = NNet(Game, args)
-    # nn1.load_checkpoint('', '00-iteration-0002.pkl')
-    # # player1 = nn1.process
+    nn1 = NNet(Game, args)
+    nn1.load_checkpoint('', '00-iteration-0073.pkl')
+
+    nn2 = NNet(Game, args)
+    nn2.load_checkpoint('', '00-iteration-0040.pkl')
+
+    alphaBoop = MCTSPlayer(nn1, args=args)  # , print_policy=True)
+    alphaBoop2 = MCTSPlayer(nn2, args=args)  # , print_policy=True)
+
+    #player1 = nn1.process
     player1 = RawMCTSPlayer(Game, args)
     # # policy, value = nn1.predict(np.array([player1, player2, colour, turn], dtype=np.float32))
     # # print(policy)
@@ -70,16 +77,16 @@ if __name__ == '__main__':
     #
     # # Bot goes first
     #players = [human1, human2]
-    players = [player1, player2]
+    players = [alphaBoop, alphaBoop2]
     #players = [stupidRoomba, stupidRoomba2]
     #
     arena = Arena(players, Game, use_batched_mcts=False, args=args, display=print)
-    wins, draws, winrates = arena.play_games(1000, verbose=True)
-    """
+    wins, draws, winrates = arena.play_games(100, verbose=True)
+    
     for i in range(len(wins)):
         print(f'player{i+1}:\n\twins: {wins[i]}\n\twin rate: {winrates[i]}')
     print('draws: ', draws)
-    """
+    
     #
     # nn1 = NNet(Game, args)
     # nn1.load_checkpoint('', 'AlphaBoop-109.pkl')

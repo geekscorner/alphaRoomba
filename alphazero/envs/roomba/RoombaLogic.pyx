@@ -24,6 +24,7 @@ cdef class Board():
     def __init__(self):
         """Set up initial board configuration."""
         self.pieces = np.zeros((4, 4), dtype=np.intc)
+        
         self.pieces[0, 0] = 3  # black piece 1
         self.pieces[1, 2] = 3  # black piece 2
         self.pieces[0, 3] = 3  # black piece 3
@@ -31,6 +32,15 @@ cdef class Board():
         self.pieces[2, 1] = -1  # white piece 1
         self.pieces[3, 0] = -1  # white piece 2
         self.pieces[3, 3] = -1  # white piece 3
+        """
+        self.pieces[0, 2] = 1  # black piece 1
+        self.pieces[0, 3] = 2  # black piece 2
+        self.pieces[2, 0] = 3  # black piece 3
+        
+        self.pieces[1, 1] = -1  # white piece 1
+        self.pieces[3, 0] = -3  # white piece 2
+        self.pieces[3, 3] = -1  # white piece 3
+        """
 
     def __getstate__(self):
         return self.height, self.width, self.win_length, np.asarray(self.pieces)
@@ -111,7 +121,7 @@ cdef class Board():
          # check to see if the piece is getting pushed off the board
         if new_row < 0 or new_row > 3 or new_col < 0 or new_col > 3:
             self.pieces[row,col] = 0   # clear out the old space to zero, nothing is there anymore because it got pushed "off"
-            return True                # return true because a piece fell off, so the calling function can end the game
+            return True                # return true because the push was successful
 
         pushedPiece = self.pieces[new_row, new_col]
         pushedDirection = abs(pushedPiece)
@@ -132,7 +142,7 @@ cdef class Board():
             elif direction == 4 and pushedDirection == 2:
                 return False    # return false because the piece cannot be pushed
             else:
-                #push it
+                #push it, calling recursively
                  piecePushed = self.push(new_row, new_col, direction)
                  if piecePushed == True:
                     self.pieces[new_row, new_col] = piece #set the new location to the moving piece since its empty
@@ -157,6 +167,8 @@ cdef class Board():
                 self.pieces[row, col] = rotation
 
     def makeMove(self, int action, int player):
+
+        #print("DEBUG: makeMove being called ", action, player)
         cdef Py_ssize_t row, col, r, c
         cdef int rotation
 
@@ -194,8 +206,11 @@ cdef class Board():
         elif movingDirection == 4:
             new_col = new_col - 1
 
-        if pushingDirection == 0 and (new_row < 0 or new_row > 3 or new_col < 0 or new_col > 3):
-            return False
+        if new_row < 0 or new_row > 3 or new_col < 0 or new_col > 3:
+            if pushingDirection == 0:
+                return False
+            else:
+                return True
         else:
             destination = abs(self.pieces[new_row, new_col])
             if destination == 0:
@@ -219,6 +234,8 @@ cdef class Board():
     def get_valid_moves(self, int player):
         cdef Py_ssize_t r, c
         cdef int[:] valid = np.zeros(128, dtype=np.intc)
+
+        #print("DEBUG: get_valid_moves being called ", self.pieces)
         
         for r in range(4): 
             for c in range(4):

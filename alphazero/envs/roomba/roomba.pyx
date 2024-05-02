@@ -37,6 +37,7 @@ class Game(GameState):
         game._board.pieces = np.copy(np.asarray(self._board.pieces))
         game._player = self._player
         game._turns = self.turns
+        game._moves = self._moves
         game.last_action = self.last_action
         return game
 
@@ -46,7 +47,7 @@ class Game(GameState):
 
     @staticmethod
     def has_draw() -> bool:
-        return False
+        return True
 
     @staticmethod
     def num_players() -> int:
@@ -68,17 +69,17 @@ class Game(GameState):
        
         super().play_action(action)
         self._board.makeMove(action, (1, -1)[self._player])
-        self._update_turn()
+        #self._update_turn()
 
-        """
+        
         self._moves += 1
         if self._moves == 3:
             self._update_turn()
             self._moves = 0
-        """    
+         
 
     def win_state(self) -> np.ndarray:
-        result = [False] * 2
+        result = [False] * 3
         game_over, player = self._board.get_win_state()
 
         if game_over:
@@ -90,6 +91,9 @@ class Game(GameState):
                 index = 1
             result[index] = True
 
+        if self.turns == MAX_TURNS:
+            result[2] = True
+            
         return np.array(result, dtype=np.uint8)
 
     def observation(self):

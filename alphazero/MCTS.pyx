@@ -81,7 +81,9 @@ cdef class Node:
     #    return rebuild_node, ([n.__reduce__() for n in self._children], self.a, self.cpuct, self._players, self.e, self.q, self.n, self.p, self.player)
 
     cdef void add_children(self, np.ndarray v, int num_players):
+        
         self._children.extend([Node(a, num_players) for a, valid in enumerate(v) if valid])
+        #print("DEBUG add_children", self, self._children)
         # shuffle children
         np.random.shuffle(self._children)
 
@@ -169,7 +171,6 @@ cdef class MCTS:
 
     # Sets the mcts back to the start for reuse
     cpdef void reset(self):
-        print('resetting')
         self._root = Node(-1, self._num_players)
         self._curnode = self._root
         self._path = []
@@ -206,25 +207,36 @@ cdef class MCTS:
             self.process_results(leaf, v, p, add_root_noise, add_root_temp)
 
     cpdef void update_root(self, object gs, int a):
-        if not self._root._children:
-            self._root.add_children(gs.valid_moves(), self._num_players)
 
+        #print("DEBUG update_root with action", a)
+        #print(self._root)
+        #print(self._root._children)
+        #print(gs)
+        #print(gs.valid_moves())
+
+
+        if not self._root._children:
+            #print("DEBUG not found, adding children with valid_moves call")
+            self._root.add_children(gs.valid_moves(), self._num_players)
+            """
+            validdds = np.array(gs.valid_moves()).astype(int)
+            indices = np.where(validdds == 1)[0]
+            print("this is what gs.valid_moves() returns", indices)
+            print(self._root._children)
+            """
        
         
         cdef Node c
         for c in self._root._children:
+            #print("DEBUG going through the node", c)
             if c.a == a:
                 self._root = c
                 return
 
-        print('wtf!!')
-        print(self._root)
-        print(self._root._children)
-        print(gs)
-        print(a)
-        print(gs.valid_moves())                    
+       
+                           
 
-        raise ValueError(f'Invalid action encountered while updating root: {c.a}')
+        raise ValueError(f'Invalid action encountered while updating root: {c.a}', a)
 
     cpdef void _add_root_noise(self):
         cdef int num_valid_moves = len(self._root._children)
@@ -257,6 +269,7 @@ cdef class MCTS:
             self._discount_max_depth = self.depth
 
         if self._curnode.n == 0:
+            #print("DEBUG leaf node with no children", self._curnode)
             self._curnode.player = leaf.player
             self._curnode.e = leaf.win_state()
             self._curnode.add_children(leaf.valid_moves(), self._num_players)
@@ -269,12 +282,19 @@ cdef class MCTS:
         
         if self._curnode.e.any():
             value = np.array(self._curnode.e, dtype=np.float32)
+            #print("DEBUG self._curnode.e", self._curnode)
         else:
             # reconstruct valid moves based on children of current node
             # instead of recalculating with gs.valid_moves() -> expensive
             valids = np.zeros(gs.action_size(), dtype=np.float32)
+            
             for c in self._curnode._children:
                 valids[c.a] = 1
+            """
+            validdds = np.array(valids).astype(int)
+            indices = np.where(validdds == 1)[0]
+            print(self._curnode, indices)
+            """
 
             # mask invalid moves and rescale
             pi *= np.array(valids, dtype=np.float32)
