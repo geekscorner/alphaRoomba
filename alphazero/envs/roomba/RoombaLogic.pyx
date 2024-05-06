@@ -24,23 +24,45 @@ cdef class Board():
     def __init__(self):
         """Set up initial board configuration."""
         self.pieces = np.zeros((4, 4), dtype=np.intc)
-        
-        self.pieces[0, 0] = 3  # black piece 1
-        self.pieces[1, 2] = 3  # black piece 2
-        self.pieces[0, 3] = 3  # black piece 3
-        
-        self.pieces[2, 1] = -1  # white piece 1
-        self.pieces[3, 0] = -1  # white piece 2
-        self.pieces[3, 3] = -1  # white piece 3
-        """
-        self.pieces[0, 2] = 1  # black piece 1
-        self.pieces[0, 3] = 2  # black piece 2
-        self.pieces[2, 0] = 3  # black piece 3
-        
-        self.pieces[1, 1] = -1  # white piece 1
-        self.pieces[3, 0] = -3  # white piece 2
-        self.pieces[3, 3] = -1  # white piece 3
-        """
+        self.startingVariation = "A"
+        self.forcedLearningPosition = False
+
+        if (self.forcedLearningPosition == True):
+            #Can we put the AI in the spot where I have beaten it to try and learn from its mistake?
+            self.pieces[0, 0] = 3  # black piece 1
+            self.pieces[1, 2] = 3  # black piece 2
+            self.pieces[1, 3] = 3  # black piece 3
+
+            self.pieces[2, 2] = -1  # white piece 1
+            self.pieces[2, 3] = -1  # white piece 2
+            self.pieces[3, 1] = -2  # white piece 3
+        elif (self.startingVariation == "A"):
+            #Position A
+            self.pieces[0, 0] = 3  # black piece 1
+            self.pieces[1, 2] = 3  # black piece 2
+            self.pieces[0, 3] = 3  # black piece 3
+
+            self.pieces[2, 1] = -1  # white piece 1
+            self.pieces[3, 0] = -1  # white piece 2
+            self.pieces[3, 3] = -1  # white piece 3
+        elif (self.startingVariation == "B"):
+            #Position B
+            self.pieces[0, 0] = 3  # black piece 1
+            self.pieces[0, 2] = 3  # black piece 2
+            self.pieces[1, 3] = 3  # black piece 3
+
+            self.pieces[2, 0] = -1  # white piece 1
+            self.pieces[3, 1] = -1  # white piece 2
+            self.pieces[3, 3] = -1  # white piece 3
+        elif (self.startingVariation == "C"):
+            #Position C
+            self.pieces[0, 1] = 3  # black piece 1
+            self.pieces[0, 2] = 3  # black piece 2
+            self.pieces[1, 3] = 4  # black piece 3
+
+            self.pieces[2, 0] = -2  # white piece 1
+            self.pieces[3, 1] = -1  # white piece 2
+            self.pieces[3, 2] = -1  # white piece 3
 
     def __getstate__(self):
         return self.height, self.width, self.win_length, np.asarray(self.pieces)

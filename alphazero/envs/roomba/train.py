@@ -12,52 +12,51 @@ args = get_args(dotdict({
     'run_name': 'roomba_fpu',
     'workers': 7,
     'startIter': 1,
-    'numIters': 1000,
+    'numIters': 200,
     'numWarmupIters': 1,
     'process_batch_size': 512,
     'train_batch_size': 512,
     # should preferably be a multiple of process_batch_size and workers
-    'gamesPerIteration': 512 * 4,
+    'gamesPerIteration': 512 * 7,
     'symmetricSamples': True,
     'skipSelfPlayIters': None,
     'selfPlayModelIter': None,
-    'numMCTSSims': 300,
+    'numMCTSSims': 200,
     'numFastSims': 40,
     'probFastSim': 0.75,
     'compareWithBaseline': True,
-    'arenaCompare': 32 * 4,
-    'arena_batch_size': 128,
+    'arenaCompare': 16 * 7,
+    'arena_batch_size': 16,
     'arenaTemp': 1,
     'arenaMCTS': True,
     'baselineCompareFreq': 10,
-    'compareWithPast': False, #elo caclulation enabled to this is not needed
+    'compareWithPast': False,  # elo caclulation enabled to this is not needed
     'pastCompareFreq': 10,
     'cpuct': 2.75,
     'fpu_reduction': 0.4,
     'load_model': True,
     'root_policy_temp': 1.3,
     'root_noise_frac': 0.3,
-    "_num_players":2,
-    #Elo
+    "_num_players": 2,
+    # Elo
     'eloMCTS': 25,
-    'eloGames':10,
-    'eloMatches':10,
+    'eloGames': 10,
+    'eloMatches': 10,
     'calculateElo': True
 }),
     model_gating=False,
     max_gating_iters=None,
-    max_moves=100,
+    max_moves=50,
 
-    lr=0.02,
+    lr=0.01,
     num_channels=128,
-    depth=10,
-    value_head_channels=64,
-    policy_head_channels=64,
-    value_dense_layers=[2048, 1024, 512],
-    policy_dense_layers=[2048, 1024, 512]
+    depth=8,
+    value_head_channels=32,
+    policy_head_channels=32,
+    value_dense_layers=[1024, 256],
+    policy_dense_layers=[1024, 256]
 )
 args.scheduler_args.milestones = [75, 150]
-
 
 if __name__ == "__main__":
     nnet = nn(Game, args)

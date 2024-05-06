@@ -198,7 +198,7 @@ class Arena:
         return self.game_state, self.game_state.win_state()
 
     @_set_state(ArenaState.PLAY_GAMES)
-    def play_games(self, num: int, verbose=False, shuffle_players=False) -> Tuple[List[int], int, List[float]]:
+    def play_games(self, num: int, verbose=False, shuffle_players=True) -> Tuple[List[int], int, List[float]]:
         """
         Plays num games in which the order of the players
         is randomized for each game. The order is simply switched

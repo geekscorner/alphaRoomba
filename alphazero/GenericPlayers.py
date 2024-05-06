@@ -201,6 +201,7 @@ class MCTSPlayer(BasePlayer):
             plot_mcts_tree(self.mcts, max_depth=self.draw_depth)
 
         action = np.random.choice(len(policy), p=policy)
+        #action = int(np.argmax(policy))  # For picking the best possible action after fully trained?
         if self.verbose:
             print('confidence of action:', policy[action])
 

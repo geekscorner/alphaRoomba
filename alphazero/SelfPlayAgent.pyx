@@ -284,6 +284,7 @@ class SelfPlayAgent(mp.Process):
             policy = self._mcts(i).probs(self.games[i], self.temps[i])
 
             action = np.random.choice(self.games[i].action_size(), p=policy)
+            #action = int(np.argmax(policy))    # For picking the best possible action after fully trained?
 
             if not self.fast and not self._is_arena:
                 self.histories[i].append((

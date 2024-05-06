@@ -51,13 +51,13 @@ if __name__ == '__main__':
 
     # # nnet players
     nn1 = NNet(Game, args)
-    nn1.load_checkpoint('', '00-iteration-0073.pkl')
+    nn1.load_checkpoint('', 'D-iteration-0077.pkl')
 
     nn2 = NNet(Game, args)
-    nn2.load_checkpoint('', '00-iteration-0040.pkl')
+    nn2.load_checkpoint('', 'D-iteration-0077.pkl')
 
-    alphaBoop = MCTSPlayer(nn1, args=args)  # , print_policy=True)
-    alphaBoop2 = MCTSPlayer(nn2, args=args)  # , print_policy=True)
+    alphaRoomba = MCTSPlayer(nn1, args=args)  # , print_policy=True)
+    alphaRoomba2 = MCTSPlayer(nn2, args=args)  # , print_policy=True)
 
     #player1 = nn1.process
     player1 = RawMCTSPlayer(Game, args)
@@ -77,7 +77,7 @@ if __name__ == '__main__':
     #
     # # Bot goes first
     #players = [human1, human2]
-    players = [alphaBoop, alphaBoop2]
+    players = [alphaRoomba, alphaRoomba2 ]
     #players = [stupidRoomba, stupidRoomba2]
     #
     arena = Arena(players, Game, use_batched_mcts=False, args=args, display=print)

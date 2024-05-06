@@ -9,7 +9,7 @@ from alphazero.envs.roomba.RoombaLogic import Board
 import numpy as np
 
 NUM_PLAYERS = 2
-MAX_TURNS = 100
+MAX_TURNS = 50
 MULTI_PLANE_OBSERVATION = True
 NUM_CHANNELS = 2 if MULTI_PLANE_OBSERVATION else 1
 
@@ -66,17 +66,12 @@ class Game(GameState):
         return np.asarray(self._board.get_valid_moves((1, -1)[self._player]))
 
     def play_action(self, action: int) -> None:
-       
         super().play_action(action)
         self._board.makeMove(action, (1, -1)[self._player])
-        #self._update_turn()
-
-        
         self._moves += 1
         if self._moves == 3:
-            self._update_turn()
             self._moves = 0
-         
+            self._update_turn()
 
     def win_state(self) -> np.ndarray:
         result = [False] * 3
@@ -107,7 +102,6 @@ class Game(GameState):
             return np.expand_dims(np.asarray(self._board.pieces), axis=0)
 
     def symmetries(self, pi: np.ndarray, winstate) -> List[Tuple[Any, int]]:
-       #TODO: Doublecheck that this actually works
         assert (len(pi) == 128)
 
         pi_moves = np.reshape(pi[:64], (8, 8))
@@ -132,6 +126,7 @@ class Game(GameState):
         return result
 
 def display(board, action=None):
+    #TODO: output a better state representation
     print(" -----------------------")
     
     
