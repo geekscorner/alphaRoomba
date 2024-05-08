@@ -24,10 +24,10 @@ cdef class Board():
     def __init__(self):
         """Set up initial board configuration."""
         self.pieces = np.zeros((4, 4), dtype=np.intc)
-        self.startingVariation = "A"
-        self.forcedLearningPosition = False
+        startingVariation = "A"
+        forcedLearningPosition = False
 
-        if (self.forcedLearningPosition == True):
+        if (forcedLearningPosition == True):
             #Can we put the AI in the spot where I have beaten it to try and learn from its mistake?
             self.pieces[0, 0] = 3  # black piece 1
             self.pieces[1, 2] = 3  # black piece 2
@@ -36,7 +36,7 @@ cdef class Board():
             self.pieces[2, 2] = -1  # white piece 1
             self.pieces[2, 3] = -1  # white piece 2
             self.pieces[3, 1] = -2  # white piece 3
-        elif (self.startingVariation == "A"):
+        elif (startingVariation == "A"):
             #Position A
             self.pieces[0, 0] = 3  # black piece 1
             self.pieces[1, 2] = 3  # black piece 2
@@ -45,7 +45,7 @@ cdef class Board():
             self.pieces[2, 1] = -1  # white piece 1
             self.pieces[3, 0] = -1  # white piece 2
             self.pieces[3, 3] = -1  # white piece 3
-        elif (self.startingVariation == "B"):
+        elif (startingVariation == "B"):
             #Position B
             self.pieces[0, 0] = 3  # black piece 1
             self.pieces[0, 2] = 3  # black piece 2
@@ -54,7 +54,7 @@ cdef class Board():
             self.pieces[2, 0] = -1  # white piece 1
             self.pieces[3, 1] = -1  # white piece 2
             self.pieces[3, 3] = -1  # white piece 3
-        elif (self.startingVariation == "C"):
+        elif (startingVariation == "C"):
             #Position C
             self.pieces[0, 1] = 3  # black piece 1
             self.pieces[0, 2] = 3  # black piece 2

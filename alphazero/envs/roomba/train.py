@@ -21,7 +21,7 @@ args = get_args(dotdict({
     'symmetricSamples': True,
     'skipSelfPlayIters': None,
     'selfPlayModelIter': None,
-    'numMCTSSims': 200,
+    'numMCTSSims': 300,
     'numFastSims': 40,
     'probFastSim': 0.75,
     'compareWithBaseline': True,
@@ -32,7 +32,7 @@ args = get_args(dotdict({
     'baselineCompareFreq': 10,
     'compareWithPast': False,  # elo caclulation enabled to this is not needed
     'pastCompareFreq': 10,
-    'cpuct': 2.75,
+    'cpuct': 4,
     'fpu_reduction': 0.4,
     'load_model': True,
     'root_policy_temp': 1.3,
