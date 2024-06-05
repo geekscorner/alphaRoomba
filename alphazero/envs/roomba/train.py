@@ -9,36 +9,34 @@ from alphazero.GenericPlayers import RawMCTSPlayer
 from alphazero.utils import dotdict
 
 args = get_args(dotdict({
-    'run_name': 'roomba_fpu',
+    'run_name': 'roomba_fpu_2moves',
     'workers': 7,
     'startIter': 1,
-    'numIters': 200,
+    'numIters': 300,
     'numWarmupIters': 1,
-    'process_batch_size': 512,
-    'train_batch_size': 512,
-    # should preferably be a multiple of process_batch_size and workers
-    'gamesPerIteration': 512 * 7,
+    'process_batch_size': 256,
+    'train_batch_size': 256,
+    'gamesPerIteration': 256 * 7,
     'symmetricSamples': True,
     'skipSelfPlayIters': None,
     'selfPlayModelIter': None,
-    'numMCTSSims': 300,
-    'numFastSims': 40,
-    'probFastSim': 0.75,
+    'numMCTSSims': 200,  # Reduced for lower complexity
+    'numFastSims': 30,
+    'probFastSim': 0.5,
     'compareWithBaseline': True,
     'arenaCompare': 16 * 7,
     'arena_batch_size': 16,
     'arenaTemp': 1,
     'arenaMCTS': True,
     'baselineCompareFreq': 10,
-    'compareWithPast': False,  # elo caclulation enabled to this is not needed
+    'compareWithPast': False,
     'pastCompareFreq': 10,
-    'cpuct': 4,
-    'fpu_reduction': 0.4,
+    'cpuct': 2,  # Adjusted for balanced exploration
+    'fpu_reduction': 0.2,
     'load_model': True,
-    'root_policy_temp': 1.3,
-    'root_noise_frac': 0.3,
-    "_num_players": 2,
-    # Elo
+    'root_policy_temp': 2,  # Encouraging exploration
+    'root_noise_frac': 0.6,  # Encouraging exploration
+    '_num_players': 2,
     'eloMCTS': 25,
     'eloGames': 10,
     'eloMatches': 10,
@@ -53,8 +51,8 @@ args = get_args(dotdict({
     depth=8,
     value_head_channels=32,
     policy_head_channels=32,
-    value_dense_layers=[1024, 256],
-    policy_dense_layers=[1024, 256]
+    value_dense_layers=[512, 256],  # Try smaller sizes
+    policy_dense_layers=[512, 256]  # Try smaller sizes
 )
 args.scheduler_args.milestones = [75, 150]
 

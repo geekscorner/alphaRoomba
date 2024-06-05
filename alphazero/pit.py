@@ -51,10 +51,10 @@ if __name__ == '__main__':
 
     # # nnet players
     nn1 = NNet(Game, args)
-    nn1.load_checkpoint('', 'new-iteration-0109.pkl')
+    nn1.load_checkpoint('', '00-iteration-0073.pkl')
 
     nn2 = NNet(Game, args)
-    nn2.load_checkpoint('', 'new-iteration-0109.pkl')
+    nn2.load_checkpoint('', '00-iteration-0073.pkl')
 
     alphaRoomba = MCTSPlayer(nn1, args=args)  # , print_policy=True)
     alphaRoomba2 = MCTSPlayer(nn2, args=args)  # , print_policy=True)
@@ -81,7 +81,7 @@ if __name__ == '__main__':
     #players = [stupidRoomba, stupidRoomba2]
     #
     arena = Arena(players, Game, use_batched_mcts=False, args=args, display=print)
-    wins, draws, winrates = arena.play_games(100, verbose=True)
+    wins, draws, winrates = arena.play_games(10, verbose=True)
     
     for i in range(len(wins)):
         print(f'player{i+1}:\n\twins: {wins[i]}\n\twin rate: {winrates[i]}')

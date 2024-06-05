@@ -29,6 +29,7 @@ cdef class Board():
 
         if (forcedLearningPosition == True):
             #Can we put the AI in the spot where I have beaten it to try and learn from its mistake?
+            """
             self.pieces[0, 0] = 3  # black piece 1
             self.pieces[1, 2] = 3  # black piece 2
             self.pieces[1, 3] = 3  # black piece 3
@@ -36,6 +37,36 @@ cdef class Board():
             self.pieces[2, 2] = -1  # white piece 1
             self.pieces[2, 3] = -1  # white piece 2
             self.pieces[3, 1] = -2  # white piece 3
+            """
+
+            """
+            self.pieces[0, 0] = 2  # black piece 1
+            self.pieces[1, 1] = 3  # black piece 2
+            self.pieces[1, 2] = 3  # black piece 3
+
+            self.pieces[1, 3] = -4  # white piece 1
+            self.pieces[2, 2] = -1  # white piece 2
+            self.pieces[3, 0] = -1  # white piece 3
+            """
+
+            """
+            self.pieces[1, 0] = 3  # black piece 1
+            self.pieces[1, 2] = -4  # black piece 2
+            self.pieces[2, 0] = 2  # black piece 3
+
+            self.pieces[2, 1] = 3  # white piece 1
+            self.pieces[3, 1] = -1  # white piece 2
+            self.pieces[3, 2] = -1  # white piece 3
+            """
+
+            self.pieces[0, 1] = -3  # black piece 1
+            self.pieces[1, 0] = 3  # black piece 2
+            self.pieces[1, 1] = 3  # black piece 3
+
+            self.pieces[2, 1] = -2  # white piece 1
+            self.pieces[2, 2] = 4  # white piece 2
+            self.pieces[3, 1] = -1  # white piece 3
+
         elif (startingVariation == "A"):
             #Position A
             self.pieces[0, 0] = 3  # black piece 1

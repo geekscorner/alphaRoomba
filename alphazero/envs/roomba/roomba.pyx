@@ -17,6 +17,7 @@ class Game(GameState):
     def __init__(self):
         super().__init__(self._get_board())
         self._moves = 0
+        self._invalid_move = -1
 
     @staticmethod
     def _get_board():
@@ -69,7 +70,7 @@ class Game(GameState):
         super().play_action(action)
         self._board.makeMove(action, (1, -1)[self._player])
         self._moves += 1
-        if self._moves == 3:
+        if self._moves == 2:
             self._moves = 0
             self._update_turn()
 
